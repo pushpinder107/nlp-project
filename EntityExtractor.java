@@ -15,6 +15,9 @@ public class EntityExtractor
 	String pattern = "<PERSON>.*?</PERSON>";
 	String folder = "ner-tagged/";
 	String post_fix = "-ner-tagged.txt";
+	public int num;
+	public ArrayList<String> all_first_names = new ArrayList<String>();
+	public ArrayList<String> all_last_names = new ArrayList<String>();
 	
 	public EntityExtractor(String mpth, String b_name)
 	{
@@ -25,7 +28,7 @@ public class EntityExtractor
 	
 	void extract () throws IOException
 	{
-		int num=0;
+		num=0;
 		String name;
 		Pattern p = Pattern.compile(pattern);
 		BufferedReader r = new BufferedReader(new FileReader(mypath + folder +book_name + post_fix)); // r reads ner-tagged files
@@ -40,12 +43,34 @@ public class EntityExtractor
 				name = (m.group(0).replaceAll("<PERSON>","")).replaceAll("</PERSON>","|#");
 				name = (name.replace('.','+')).replaceAll("\\+ ","+ ");
 				name = name.replaceAll(" ","|");
+				String[] split = name.split("[|]",2);
+				all_first_names.add(split[0]);
+				all_last_names.add(split[1]);
 				out.write(name.trim() + "\r\n");
 			}	
 		}
+		PrintWriter out2 = new PrintWriter(new FileWriter(mypath+book_name+"-arraylist-nospace.txt"), true);
+		int i;
+		for(i=0;i<all_first_names.size();i++)
+		 out2.write(all_first_names.get(i)+"\t"+ all_last_names.get(i)+ "\r\n");
+		 
+		 out2.flush();
+		 out2.close();
+	  
+	 
 		out.flush();
 		out.close();
 		r.close();
 		System.out.println("Total entity mentions extracted (with tags): " + (num+1));
 	}
+	
+	int getEntityNum() //return total number of entity mentions
+	{
+		return num+1;
+	}
+	
+	
+	
+	
+	
 }

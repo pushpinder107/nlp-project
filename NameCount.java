@@ -8,22 +8,26 @@ public class NameCount
 {
 	String book_name;
 	String mypath;
+	String inFolder, outFolder;
 	public static int num;
 	public int[] freq;
 	public String[] name;
 	public String[] first_name;
 	public String[] last_name;
 	
-	public NameCount(String mpth, String b_name)
+	public NameCount(String mpth, String inFldr, String outFldr, String b_name)
 	{
 		book_name = b_name;
 		mypath = mpth;
+		inFolder = inFldr + "/";
+		outFolder = outFldr + "/";
+		
 	}
 	
 	void count() throws IOException
 	{
-		Scanner input = new Scanner(new File(mypath+"names/"+book_name+"-names-nospace.txt"));
-		FileWriter f = new FileWriter(mypath+"count/"+book_name+"-name-count-unsorted.txt"); 
+		Scanner input = new Scanner(new File(mypath + inFolder + book_name + "-names-nospace.txt"));
+		FileWriter f = new FileWriter(mypath + outFolder + book_name + "-name-count-unsorted.txt"); 
 		
 		Map<String, Integer> wordCounts = new TreeMap<String, Integer>();
         
@@ -109,6 +113,7 @@ public class NameCount
 		first_name = new String[this.num];
 		last_name = new String[this.num];
 		FileWriter f = new FileWriter(mypath+"test/"+book_name+"-name-count-clean.txt");
+		
 		for(i=0;i<this.num;i++)
 		{
 			
@@ -124,6 +129,47 @@ public class NameCount
 		
 	}
 	
+	void seqNameArray(int entity_num) throws IOException
+	{
+		
+		int i;
+		Scanner input = new Scanner(new File(mypath + inFolder + book_name + "-names-nospace.txt"));
+		String[] seq_name_array = new String [entity_num];
+		for(i=0; i<entity_num; i++)
+		{
+			if(input.hasNext())
+			seq_name_array[i] = input.next();
+		}
+		splitSeqNames(seq_name_array, entity_num);
+		
+		
+		
+	}
+	
+	void splitSeqNames(String[] name, int entity_num) throws IOException
+	{
+		int i;
+		String[] seq_first_name = new String[entity_num];
+		String[] seq_last_name = new String[entity_num];
+		FileWriter f = new FileWriter(mypath+"test/"+book_name+"-name-verbatim-unclean.txt");
+		
+		for(i=0;i<entity_num;i++)
+		{
+			
+			String split[] = name[i].split("[|]",2);
+			
+			seq_first_name[i] = split[0];
+			seq_last_name[i] = split[1];
+			f.write(seq_first_name[i]+"|"+seq_last_name[i]+"|"+"\r\n");
+		}
+		f.flush();
+		f.close();
+		
+		
+	}
+	
+				
+	
 	String[] getFirstNames()
 	{
 		return first_name;
@@ -132,6 +178,16 @@ public class NameCount
 	String[] getLastNames()
 	{
 		return last_name;
+	}
+	
+	int[] getFreq()
+	{
+		return freq;
+	}
+	
+	String[] getAllNames()
+	{
+		return name;
 	}
 	
 	
