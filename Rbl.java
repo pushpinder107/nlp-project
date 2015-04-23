@@ -22,6 +22,17 @@ public static void main(String args[]) throws IOException
 		EntityExtractor e = new EntityExtractor(mypath,book_name);
 		e.extract();
 		int entity_count = e.getEntityNum();
+		String[] all_first_names = e.getAllFirstNames();
+		String[] all_last_names = e.getAllLastNames();
+		
+		WordCount w = new WordCount(mypath, "names", book_name, "count", "-name-count-unsorted");
+		w.count();
+		int[] freq = w.getFrequency();
+		String[] unique_names = w.getUniqueNames();
+		int total_refs = w.getTotalRefs();
+		int num_unique = w.getUniqueNum();
+		
+		//System.out.println("Entities extracted =" +entity_count+ "\nTotal unique names ="+num_unique);
 		
 		/*NameCount n = new NameCount(mypath, "names", "count", book_name);
 		n.count();

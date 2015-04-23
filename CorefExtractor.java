@@ -6,8 +6,7 @@ import java.nio.charset.*;
 
 public class CorefExtractor
 {
-	String mypath;
-	String book_name;
+	String mypath, book_name;
 	public int count_coref=1;
 	public String[][] corefarray;
 	
