@@ -1,3 +1,8 @@
+//unique_first_names are clean
+//unique_last_names contain # if they denote empty last name
+
+
+
 import java.util.regex.*;
 import java.util.*;
 import java.io.*;
@@ -6,7 +11,7 @@ public class WordCount
 {
 	public String mypath, input_file, inFolder, outFolder, output_file;
 	public int num, total_refs;
-	public String[] unique_names;
+	public String[] unique_names, unique_first_names, unique_last_names;
 	public int[] freq; 
 	
 	
@@ -43,7 +48,7 @@ public class WordCount
 		
         System.out.println("Total unique names mentioned in file = " + wordCounts.size());
         
-		num=wordCounts.size();
+		num=wordCounts.size(); //unique names
 		freq = new int[num];
 		unique_names = new String[num];
 		int i=0;
@@ -68,6 +73,25 @@ public class WordCount
 		
 	}	
 	
+	void uniqueNamesSplit() throws IOException
+	{
+		FileWriter f = new FileWriter(mypath+"test/" + input_file + "-unique-names.txt");
+		String[] split;
+		unique_first_names = new String[num];
+		unique_last_names = new String[num];
+		int i;
+		for(i=0; i<num ;i++)
+		{
+			split = unique_names[i].split("[|]",2);
+			unique_first_names[i] = split[0];
+			unique_last_names[i] = split[1].replace("|#","");
+			f.write(unique_first_names[i] + " " + unique_last_names[i] + "\r\n");
+		}
+		f.flush();
+		f.close();
+		
+	}
+	
 		
 	int[] getFrequency()
 	{
@@ -88,6 +112,17 @@ public class WordCount
 	{
 		return total_refs;
 	}
+	
+	String[] getUniqueFirstNames()
+	{
+		return unique_first_names;
+	}
+	
+	String[] getUniqueLastNames()
+	{
+		return unique_last_names;
+	}
+	
 		
 }
 	
