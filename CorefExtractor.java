@@ -129,19 +129,27 @@ public class CorefExtractor
 		{
 		
 			Matcher m = p.matcher(new_corefs[i][9]);
-			int ss=0;
-			new_corefs[i][9] = "";
+			int matches=0;
+			if((!new_corefs[i][8].equalsIgnoreCase(new_corefs[i][9])) &&  !(new_corefs[i][8].equalsIgnoreCase("he")) && !(new_corefs[i][8].equalsIgnoreCase("she")) )
+			{
+			
 			while(m.find())
 			{
-				new_corefs[i][9] = new_corefs[i][9].trim() +" "+ (m.group(0)).trim();
+				new_corefs[i][9] = "";
+				new_corefs[i][9] = new_corefs[i][9].trim() +" "+ (m.group(0)).trim(); //for multiple names in one coref
 				//System.out.println(new_corefs[i][9]+" matched: |"+m.group(0)+"|");
 				//f2.write(new_corefs[i][9]+" matched: |"+m.group(0)+"|\r\n");
-				ss++;
+				matches++;
 			}
 			new_corefs[i][9] = new_corefs[i][9].trim();
-		if(ss==0)
-		    System.out.println(new_corefs[i][9]+" :no match");
-		
+			if(matches==0)
+			{
+				new_corefs[i][9] = new_corefs[i][9].replaceAll("[#|$]","");
+				new_corefs[i][9] = (new_corefs[i][9].replaceAll("\\b[a-z]+","")).trim();
+				new_corefs[i][9] = new_corefs[i][9].replaceAll("\\s\\s\\s*"," ");
+				
+			}
+			}
 		}
 		for(i=0;i<l;i++)
 		{
