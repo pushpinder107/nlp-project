@@ -40,7 +40,7 @@ public static void main(String args[]) throws IOException
 		w.uniqueNamesSplit();
 		String[] unique_first_names = w.getUniqueFirstNames();
 		//System.out.println("unique_first_names contains: "+unique_first_names.length);
-		String[] unique_last_names = w.getUniqueLastNames();
+		String[] unique_last_names = w.getUniqueLastNames();//contains # when empty
 		
 		CorefExtractor c = new CorefExtractor(mypath, book_name);
 		c.extractCorefs();
