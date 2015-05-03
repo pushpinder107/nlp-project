@@ -49,6 +49,9 @@ public static void main(String args[]) throws IOException
 		
 		ResolveCorefs rc = new ResolveCorefs(mypath, book_name, reduced_corefs, unique_first_names, unique_last_names, freq);
 		rc.resolve();
+		rc.printFreqChanges();
+		rc.resolve_final();
+		
 		//System.out.println("corefarray[1][9]: " + corefarray[1][9]);
 		//System.out.println("unique_first_name:"+unique_first_names.length+"\nuniquelastname: "+unique_last_names.length);
 		//System.out.println("Rows in corefarray: " + corefarray.length + "\nColumns: " +corefarray[0].length);
